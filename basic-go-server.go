@@ -43,23 +43,38 @@ func getTaskAsString(input interface{})(string){
 func GetTasksHandler(res http.ResponseWriter, req *http.Request) {
 	showCompleted := req.URL.Query().Get("showCompleted")
 	showCompletedBool, _ := strconv.ParseBool(showCompleted)
-	fmt.Fprint(res, "Getting all tasks\n")
+	
 
-	for _, task := range taskList.tasks {
-		if showCompletedBool {
-			fmt.Fprint(res, getTaskAsString(task))
-			fmt.Fprint(res, "\n")
-		} else {
-			if !task.completed {
+	if len(taskList.tasks) == 0 {
+		res.WriteHeader(http.StatusNoContent)
+		fmt.Fprint(res, "Getting all tasks...\n")
+		fmt.Fprint(res, "There are no tasks!")
+		
+	}else{
+		res.WriteHeader(http.StatusOK)
+		fmt.Fprint(res, "Getting all tasks...\n")
+		for _, task := range taskList.tasks {
+			if showCompletedBool {
 				fmt.Fprint(res, getTaskAsString(task))
 				fmt.Fprint(res, "\n")
+			} else {
+				if !task.completed {
+					fmt.Fprint(res, getTaskAsString(task))
+					fmt.Fprint(res, "\n")
+				}
 			}
 		}
+		
+
 	}
+
+	
 
 }
 
 func AddTaskHandler(res http.ResponseWriter, req *http.Request) {
+	//note: the request header needs to be changed before we write to the request
+	res.WriteHeader(http.StatusCreated)
 	id := req.URL.Query().Get("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
 
@@ -74,6 +89,7 @@ func AddTaskHandler(res http.ResponseWriter, req *http.Request) {
 
 	fmt.Fprint(res, "Adding the following task to your task list\n")
 	fmt.Fprint(res, getTaskAsString(task) )
+	
 }
 
 func CompleteTaskHandler(res http.ResponseWriter, req *http.Request) {
@@ -96,7 +112,15 @@ func CompleteTaskHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func MainPageHandler(res http.ResponseWriter, req *http.Request) {
+	
+	//example of setting response headers such as the status code
+	//codes found https://go.dev/src/net/http/status.go
+	res.WriteHeader(http.StatusOK)
+
 	fmt.Fprintf(res, "Welcome to your super simple task manager\n")
+
+
+	//header := res.Header()
 
 }
 
@@ -107,7 +131,7 @@ func main() {
 	http.HandleFunc("/tasks/complete", CompleteTaskHandler)
 	http.HandleFunc("/",MainPageHandler)
 
-	// start HTTP server with `http.DefaultServeMux` handler
+	// start HTTP server with global `http.DefaultServeMux` handler
 	log.Fatal(http.ListenAndServe(":9000", nil))
 
 }
