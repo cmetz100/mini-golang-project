@@ -54,15 +54,11 @@ func getTaskAsString(input interface{})(string){
 }
 
 func (t *TaskList) GetTasksHandler(res http.ResponseWriter, req *http.Request) {
-
 	switch req.Method {
 	case "GET":
 		showCompleted := req.URL.Query().Get("showCompleted")
 		showCompletedBool, _ := strconv.ParseBool(showCompleted)
 		if len(t.tasks) == 0 {
-			//res.WriteHeader(http.StatusNoContent) if we wanted but to show more info ill keep as 200
-			//unnecesary to send StatusOK but just doing it for clarity as I learn
-			//response code must be set before we write to the response
 			res.WriteHeader(http.StatusOK)
 			fmt.Fprint(res, "Getting all tasks...\n")
 			fmt.Fprint(res, "There are no tasks!")
@@ -70,7 +66,8 @@ func (t *TaskList) GetTasksHandler(res http.ResponseWriter, req *http.Request) {
 		}else{
 			res.WriteHeader(http.StatusOK)
 			fmt.Fprint(res, "Getting all tasks...\n")
-	
+
+			// log number of tasks requested by the user
 			info := fmt.Sprintf("User requested %d tasks",len(t.tasks))
 			log.WithFields(standardFields).Info(info)
 	
@@ -96,16 +93,10 @@ func (t *TaskList) GetTasksHandler(res http.ResponseWriter, req *http.Request) {
 		client.Gauge("num_complete_tasks.gauge",0.0,[]string{"environment:dev"},1)
 		client.Gauge("num_incomplete_tasks.gauge",0.0,[]string{"environment:dev"},1)
 	}	
-	
-	
-
-	
-
-	
-
 }
 
 func (t *TaskList) AddTaskHandler(res http.ResponseWriter, req *http.Request) {
+	//check path
 	if req.URL.Path != "/tasks/add" {
 	    http.NotFound(res, req)
 	    return
@@ -224,13 +215,6 @@ func main() {
         profiler.WithProfileTypes(
             profiler.CPUProfile,
             profiler.HeapProfile,
-
-            // The profiles below are disabled by
-            // default to keep overhead low, but
-            // can be enabled as needed.
-            // profiler.BlockProfile,
-            // profiler.MutexProfile,
-            // profiler.GoroutineProfile,
         ),
     )
     if err != nil {
