@@ -165,7 +165,13 @@ func main() {
 		logPath = "mini-server-logs.log" //path is from our current directory not absolute
 	}
 	//configure port to send statsd metric over
-	client, _ = statsd.New("127.0.0.1:8125")
+
+	//for my server running on host
+	//client, _ = statsd.New("127.0.0.1:8125")
+
+	//for my server running in docker container
+	client, _ = statsd.New("host.docker.internal:8125")
+	//for this to work make sure to expose this port on the host by running basic http server with "python -m http.server 8125"
 
 	//configure log location
 	f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
