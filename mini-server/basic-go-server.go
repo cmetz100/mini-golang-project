@@ -160,10 +160,10 @@ func (t *TaskList) MainPageHandler(res http.ResponseWriter, req *http.Request) {
 
 func main() {
 	//ingest command-line args to get optionally specified log path
-	logPath := os.Args[1]
+	/* logPath := os.Args[1]
 	if logPath == "" {
 		logPath = "mini-server-logs.log" //path is from our current directory not absolute
-	}
+	} */
 	//configure port to send statsd metric over
 
 	//for my server running on host
@@ -173,13 +173,15 @@ func main() {
 	client, _ = statsd.New("host.docker.internal:8125")
 	//for this to work make sure to expose this port on the host by running basic http server with "python -m http.server 8125"
 
-	//configure log location
-	f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	//configure log location - this is all for host agent
+	/* f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Panicf("error opening file: %v", err)
 	}
-	defer f.Close()
-	log.SetOutput(f)
+	defer f.Close() */
+	//log.SetOutput(f) //this is for host agent when we sending logs to a specific location but for docker agent we need our app to send to stdout
+	log.SetOutput(os.Stdout)
+
 	log.SetFormatter(&log.JSONFormatter{})
 
 	//configure standard log fields
@@ -203,7 +205,7 @@ func main() {
 	)
 	defer tracer.Stop()
 
-	err = profiler.Start(
+	err := profiler.Start(
 		profiler.WithService("task-manager"),
 		profiler.WithEnv("dev"),
 		profiler.WithProfileTypes(

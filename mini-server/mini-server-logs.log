@@ -3255,3 +3255,41 @@
 {"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 373 tasks","session":"testing","time":"2023-06-13T18:57:37Z"}
 {"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 9, Title = task #9, Description = boo1\n","session":"testing","time":"2023-06-13T18:57:37Z"}
 {"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 374 tasks","session":"testing","time":"2023-06-13T18:57:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 1, Title = task #1, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 375 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"level":"info","msg":"Completed task with id 1\n","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 2, Title = task #2, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 376 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 3, Title = task #3, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 377 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 4, Title = task #4, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 378 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 5, Title = task #5, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 379 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 6, Title = task #6, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 380 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 7, Title = task #7, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 381 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 8, Title = task #8, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 382 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 9, Title = task #9, Description = boo1\n","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 383 tasks","session":"testing","time":"2023-06-13T18:59:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 1, Title = task #1, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 384 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"level":"info","msg":"Completed task with id 1\n","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 2, Title = task #2, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 385 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 3, Title = task #3, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 386 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 4, Title = task #4, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 387 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 5, Title = task #5, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 388 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 6, Title = task #6, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 389 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 7, Title = task #7, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 390 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 8, Title = task #8, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 391 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"Added task with Id = 9, Title = task #9, Description = boo1\n","session":"testing","time":"2023-06-13T19:01:37Z"}
+{"appname":"mini-golang-http-server","hostname":"Calebs Mac","level":"info","msg":"User requested 392 tasks","session":"testing","time":"2023-06-13T19:01:37Z"}
