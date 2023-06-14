@@ -1,0 +1,10 @@
+targetSystem: "linux"
+datadog:
+  site: datadoghq.com
+  kubelet:
+    tlsVerify: false
+  apm:
+    socketEnabled: true 
+  logs:
+    enabled: true
+    containerCollectAll: true

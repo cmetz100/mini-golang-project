@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-manager-app
+spec:
+  containers:
+  - name: task-manager-app
+    image: my-first-docker-app:latest
+    imagePullPolicy: IfNotPresent
+    env:
+    - name: DD_TRACE_AGENT_URL
+      value: 'unix:///var/run/datadog/apm.socket'
+    volumeMounts:
+    - name: apmsocketpath
+      mountPath: /var/run/datadog
+  volumes:
+  - hostPath:
+      path: /var/run/datadog/
+    name: apmsocketpath
