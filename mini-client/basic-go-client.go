@@ -13,7 +13,7 @@ import (
 	"github.com/DataDog/datadog-go/statsd"
 )
 
-const endpointURL string = "http://127.0.0.1:9000"
+const endpointURL string = "http://10.244.0.49:9000" //local ip of task manager container
 
 func addTask(id int, t string, d string, cb bool) {
 	c := http.Client{Timeout: time.Duration(1) * time.Second}
@@ -82,7 +82,7 @@ func getTasks(showCompleted bool) {
 }
 
 func newClient() *statsd.Client {
-	statsd, err := statsd.New("127.0.0.1:8125")
+	statsd, err := statsd.New("")
 	if err != nil {
 		log.Panic(err)
 	}

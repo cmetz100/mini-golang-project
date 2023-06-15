@@ -170,8 +170,11 @@ func main() {
 	//client, _ = statsd.New("127.0.0.1:8125")
 
 	//for my server running in docker container
-	client, _ = statsd.New("host.docker.internal:8125")
+	//client, _ = statsd.New("host.docker.internal:8125")
 	//for this to work make sure to expose this port on the host by running basic http server with "python -m http.server 8125"
+
+	//for server in container in k8
+	client, _ = statsd.New("")
 
 	//configure log location - this is all for host agent
 	/* f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
