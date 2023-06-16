@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-manager-app
+  labels:
+    app.kubernetes.io/name: task-proxy
+spec:
+  containers:
+  - name: task-manager-app
+    image: my-first-docker-app:latest
+    imagePullPolicy: IfNotPresent
+    ports:
+      - containerPort: 9000
+        name: task-manager-ep
+    env:
+    - name: DD_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP

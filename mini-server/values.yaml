@@ -1,0 +1,25 @@
+targetSystem: "linux"
+datadog:
+  dogstatsd:
+    port: 8125
+    useHostPort: true
+    nonLocalTraffic: true
+
+  site: datadoghq.com
+  kubelet:
+    tlsVerify: false
+  apm:
+    socketEnabled: true 
+  logs:
+    enabled: true
+    containerCollectAll: true
+agents:
+  containers:
+    agent:
+      ports:
+      - containerPort: 8125
+        hostPort: 8125
+        name: dogstatsdport
+        protocol: UDP
+
+

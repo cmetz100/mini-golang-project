@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-client-app
+spec:
+  containers:
+  - name: task-client-app
+    image: my-first-client:latest
+    imagePullPolicy: IfNotPresent
+    env:
+    - name: DD_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
