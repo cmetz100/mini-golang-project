@@ -3,7 +3,6 @@ kind: Pod
 metadata:
   name: task-client-app
 spec:
-  hostPID: true
   containers:
   - name: task-client-app
     image: my-first-client:latest
