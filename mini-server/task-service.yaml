@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-manager-service
+spec:
+  selector:
+    app.kubernetes.io/name: task-proxy
+  ports:
+  - name: task-manager-service-port
+    protocol: TCP
+    port: 9000
+    targetPort: task-manager-ep

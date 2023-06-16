@@ -14,7 +14,6 @@ datadog:
     enabled: true
     containerCollectAll: true
 agents:
-  useHostNetwork: true
   containers:
     agent:
       ports:
@@ -22,12 +21,5 @@ agents:
         hostPort: 8125
         name: dogstatsdport
         protocol: UDP
-#  volumeMounts:
-#  - name: dsdsocket
-#    mountPath: /var/run/datadog
-#    readOnly: true
-#  volumes:
-#  - hostPath:
-#        path: /var/run/datadog/
-#    name: dsdsocket
+
 

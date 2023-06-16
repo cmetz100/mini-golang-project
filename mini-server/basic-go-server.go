@@ -57,19 +57,13 @@ func (t *TaskList) TasksHandler(res http.ResponseWriter, req *http.Request) {
 			res.WriteHeader(http.StatusOK)
 			fmt.Fprint(res, "Getting all tasks...\n")
 
-			// log number of tasks requested by the user
 			info := fmt.Sprintf("User requested %d tasks", len(t.tasks))
 			log.WithFields(standardFields).Info(info)
 
 			for _, task := range t.tasks {
-				if showCompletedBool {
+				if showCompletedBool || !task.Completed {
 					getTaskAsString(task, res)
 					fmt.Fprint(res, "\n")
-				} else {
-					if !task.Completed {
-						getTaskAsString(task, res)
-						fmt.Fprint(res, "\n")
-					}
 				}
 			}
 
@@ -85,15 +79,10 @@ func (t *TaskList) TasksHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func (t *TaskList) AddTaskHandler(res http.ResponseWriter, req *http.Request) {
-	if req.URL.Path != "/tasks/add" {
-		http.NotFound(res, req)
-		return
-	}
-
 	var task Task
 	err := json.NewDecoder(req.Body).Decode(&task)
 	if err != nil {
-		http.Error(res, err.Error(), 400)
+		http.Error(res, err.Error(), http.StatusBadRequest)
 		return
 	}
 	res.WriteHeader(http.StatusCreated)
@@ -101,7 +90,6 @@ func (t *TaskList) AddTaskHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprint(res, "Adding the following task to your task list\n")
 	getTaskAsString(task, res)
 
-	//log user action
 	info := fmt.Sprintf("Added task with Id = %d, Title = %s, Description = %s\n", task.Id, task.Title, task.Description)
 	log.WithFields(standardFields).Info(info)
 
@@ -115,14 +103,10 @@ func (t *TaskList) AddTaskHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func (t *TaskList) CompleteTaskHandler(res http.ResponseWriter, req *http.Request) {
-	if req.URL.Path != "/tasks/complete" {
-		http.NotFound(res, req)
-		return
-	}
 	var update UpdateTask
 	err := json.NewDecoder(req.Body).Decode(&update)
 	if err != nil {
-		http.Error(res, err.Error(), 400)
+		http.Error(res, err.Error(), http.StatusBadRequest)
 		return
 	}
 	res.WriteHeader(http.StatusOK)
@@ -159,32 +143,8 @@ func (t *TaskList) MainPageHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	//ingest command-line args to get optionally specified log path
-	/* logPath := os.Args[1]
-	if logPath == "" {
-		logPath = "mini-server-logs.log" //path is from our current directory not absolute
-	} */
-	//configure port to send statsd metric over
-
-	//for my server running on host
-	//client, _ = statsd.New("127.0.0.1:8125")
-
-	//for my server running in docker container
-	//client, _ = statsd.New("host.docker.internal:8125")
-	//for this to work make sure to expose this port on the host by running basic http server with "python -m http.server 8125"
-
-	//for server in container in k8
 	client, _ = statsd.New("")
-
-	//configure log location - this is all for host agent
-	/* f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Panicf("error opening file: %v", err)
-	}
-	defer f.Close() */
-	//log.SetOutput(f) //this is for host agent when we sending logs to a specific location but for docker agent we need our app to send to stdout
 	log.SetOutput(os.Stdout)
-
 	log.SetFormatter(&log.JSONFormatter{})
 
 	//configure standard log fields

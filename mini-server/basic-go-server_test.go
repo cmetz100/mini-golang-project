@@ -24,6 +24,7 @@ func TestEmptyGetTasksHandlerShowCompleteTrue(t *testing.T) {
 	assert.Nil(t, err) //check that error is nil since thats what we expect
 	expectedRespBody := "Getting all tasks...\nThere are no tasks!"
 	assert.Equal(t, string(data), expectedRespBody)
+	assert.Equal(t, http.StatusOK, res.StatusCode)
 
 }
 
@@ -39,15 +40,17 @@ func TestEmptyGetTasksHandlerShowCompleteFalse(t *testing.T) {
 	assert.Nil(t, err) //check that error is nil since thats what we expect
 	expectedRespBody := "Getting all tasks...\nThere are no tasks!"
 	assert.Equal(t, string(data), expectedRespBody)
+	assert.Equal(t, http.StatusOK, res.StatusCode)
 }
 
 func TestEmptyGetTasksHandler(t *testing.T) {
 	var taskList TaskList
 	cases := []struct {
 		endP, params, want string
+		respCode           int
 	}{
-		{"/tasks?", "showCompleted=false", "Getting all tasks...\nThere are no tasks!"},
-		{"/tasks?", "showCompleted=true", "Getting all tasks...\nThere are no tasks!"},
+		{"/tasks?", "showCompleted=false", "Getting all tasks...\nThere are no tasks!", http.StatusOK},
+		{"/tasks?", "showCompleted=true", "Getting all tasks...\nThere are no tasks!", http.StatusOK},
 	}
 
 	for _, c := range cases {
@@ -61,6 +64,7 @@ func TestEmptyGetTasksHandler(t *testing.T) {
 
 		assert.Nil(t, err)
 		assert.Equal(t, string(data), c.want)
+		assert.Equal(t, c.respCode, res.StatusCode)
 	}
 
 }
@@ -69,10 +73,11 @@ func TestAddCompleteGetTaskCorrect(t *testing.T) {
 	var taskList TaskList
 	cases := []struct {
 		url, op, id, title, description, completed, want string
+		respCode                                         int
 	}{
-		{"/tasks", "/add", "2", "secondTask", "boo2", "false", "Adding the following task to your task list\nTask:\n\tId = 2\n\tTitle = secondTask\n\tDescription = boo2\n\tCompleted = false"},
-		{"/tasks", "/complete", "2", "", "", "", "Completed task with id 2\n"},
-		{"/tasks", "", "", "", "", "true", "Getting all tasks...\nTask:\n\tId = 2\n\tTitle = secondTask\n\tDescription = boo2\n\tCompleted = true\n"},
+		{"/tasks", "/add", "2", "secondTask", "boo2", "false", "Adding the following task to your task list\nTask:\n\tId = 2\n\tTitle = secondTask\n\tDescription = boo2\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/complete", "2", "", "", "", "Completed task with id 2\n", http.StatusOK},
+		{"/tasks", "", "", "", "", "true", "Getting all tasks...\nTask:\n\tId = 2\n\tTitle = secondTask\n\tDescription = boo2\n\tCompleted = true\n", http.StatusOK},
 	}
 
 	for _, c := range cases {
@@ -88,6 +93,7 @@ func TestAddCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 		case "/add": //add a task (POST)
 			url := c.url + c.op
 			completedBool, _ := strconv.ParseBool(c.completed)
@@ -102,6 +108,7 @@ func TestAddCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		case "/complete": //complete a task (PATCH)
 			url := c.url + c.op
@@ -116,6 +123,7 @@ func TestAddCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		case "/clear": //clear tasks (DELETE)
 			url := c.url
@@ -127,6 +135,7 @@ func TestAddCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		}
 	}
@@ -137,20 +146,21 @@ func TestAddManyCompleteGetTaskCorrect(t *testing.T) {
 	var taskList TaskList
 	cases := []struct {
 		url, op, id, title, description, completed, want string
+		respCode                                         int
 	}{
-		{"/tasks", "/add", "1", "task1", "boo1", "false", "Adding the following task to your task list\nTask:\n\tId = 1\n\tTitle = task1\n\tDescription = boo1\n\tCompleted = false"},
-		{"/tasks", "/add", "2", "task2", "boo2", "false", "Adding the following task to your task list\nTask:\n\tId = 2\n\tTitle = task2\n\tDescription = boo2\n\tCompleted = false"},
-		{"/tasks", "/add", "3", "task3", "boo3", "false", "Adding the following task to your task list\nTask:\n\tId = 3\n\tTitle = task3\n\tDescription = boo3\n\tCompleted = false"},
-		{"/tasks", "/add", "4", "task4", "boo4", "false", "Adding the following task to your task list\nTask:\n\tId = 4\n\tTitle = task4\n\tDescription = boo4\n\tCompleted = false"},
-		{"/tasks", "/add", "5", "task5", "boo5", "false", "Adding the following task to your task list\nTask:\n\tId = 5\n\tTitle = task5\n\tDescription = boo5\n\tCompleted = false"},
-		{"/tasks", "/complete", "1", "", "", "", "Completed task with id 1\n"},
-		{"/tasks", "/complete", "2", "", "", "", "Completed task with id 2\n"},
-		{"/tasks", "/complete", "6", "", "", "", "No task with ID = 6 to complete\n"},
+		{"/tasks", "/add", "1", "task1", "boo1", "false", "Adding the following task to your task list\nTask:\n\tId = 1\n\tTitle = task1\n\tDescription = boo1\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/add", "2", "task2", "boo2", "false", "Adding the following task to your task list\nTask:\n\tId = 2\n\tTitle = task2\n\tDescription = boo2\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/add", "3", "task3", "boo3", "false", "Adding the following task to your task list\nTask:\n\tId = 3\n\tTitle = task3\n\tDescription = boo3\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/add", "4", "task4", "boo4", "false", "Adding the following task to your task list\nTask:\n\tId = 4\n\tTitle = task4\n\tDescription = boo4\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/add", "5", "task5", "boo5", "false", "Adding the following task to your task list\nTask:\n\tId = 5\n\tTitle = task5\n\tDescription = boo5\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/complete", "1", "", "", "", "Completed task with id 1\n", http.StatusOK},
+		{"/tasks", "/complete", "2", "", "", "", "Completed task with id 2\n", http.StatusOK},
+		{"/tasks", "/complete", "6", "", "", "", "No task with ID = 6 to complete\n", http.StatusOK},
 		{"/tasks", "", "", "", "", "false",
 			"Getting all tasks...\n" +
 				"Task:\n\tId = 3\n\tTitle = task3\n\tDescription = boo3\n\tCompleted = false\n" +
 				"Task:\n\tId = 4\n\tTitle = task4\n\tDescription = boo4\n\tCompleted = false\n" +
-				"Task:\n\tId = 5\n\tTitle = task5\n\tDescription = boo5\n\tCompleted = false\n"},
+				"Task:\n\tId = 5\n\tTitle = task5\n\tDescription = boo5\n\tCompleted = false\n", http.StatusOK},
 	}
 
 	for _, c := range cases {
@@ -166,6 +176,7 @@ func TestAddManyCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 		case "/add": //add a task (POST)
 			url := c.url + c.op
 			completedBool, _ := strconv.ParseBool(c.completed)
@@ -180,6 +191,7 @@ func TestAddManyCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		case "/complete": //complete a task (PATCH)
 			url := c.url + c.op
@@ -194,6 +206,7 @@ func TestAddManyCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		case "/clear": //clear tasks (DELETE)
 			url := c.url
@@ -205,6 +218,7 @@ func TestAddManyCompleteGetTaskCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 		}
 	}
 
@@ -214,13 +228,14 @@ func TestAddGetClearTasksCorrect(t *testing.T) {
 	var taskList TaskList
 	cases := []struct {
 		url, op, id, title, description, completed, want string
+		respCode                                         int
 	}{
-		{"/tasks", "/add", "1", "task1", "boo1", "false", "Adding the following task to your task list\nTask:\n\tId = 1\n\tTitle = task1\n\tDescription = boo1\n\tCompleted = false"},
-		{"/tasks", "/add", "2", "task2", "boo2", "false", "Adding the following task to your task list\nTask:\n\tId = 2\n\tTitle = task2\n\tDescription = boo2\n\tCompleted = false"},
-		{"/tasks", "/add", "3", "task3", "boo3", "false", "Adding the following task to your task list\nTask:\n\tId = 3\n\tTitle = task3\n\tDescription = boo3\n\tCompleted = false"},
-		{"/tasks", "/complete", "6", "", "", "", "No task with ID = 6 to complete\n"},
-		{"/tasks", "/clear", "", "", "", "", ""},
-		{"/tasks", "", "", "", "", "true", "Getting all tasks...\nThere are no tasks!"},
+		{"/tasks", "/add", "1", "task1", "boo1", "false", "Adding the following task to your task list\nTask:\n\tId = 1\n\tTitle = task1\n\tDescription = boo1\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/add", "2", "task2", "boo2", "false", "Adding the following task to your task list\nTask:\n\tId = 2\n\tTitle = task2\n\tDescription = boo2\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/add", "3", "task3", "boo3", "false", "Adding the following task to your task list\nTask:\n\tId = 3\n\tTitle = task3\n\tDescription = boo3\n\tCompleted = false", http.StatusCreated},
+		{"/tasks", "/complete", "6", "", "", "", "No task with ID = 6 to complete\n", http.StatusOK},
+		{"/tasks", "/clear", "", "", "", "", "", http.StatusNoContent},
+		{"/tasks", "", "", "", "", "true", "Getting all tasks...\nThere are no tasks!", http.StatusOK},
 	}
 
 	for _, c := range cases {
@@ -236,6 +251,7 @@ func TestAddGetClearTasksCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 		case "/add": //add a task (POST)
 			url := c.url + c.op
 			completedBool, _ := strconv.ParseBool(c.completed)
@@ -250,6 +266,7 @@ func TestAddGetClearTasksCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		case "/complete": //complete a task (PATCH)
 			url := c.url + c.op
@@ -264,6 +281,7 @@ func TestAddGetClearTasksCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 
 		case "/clear": //clear tasks (DELETE) at endpoint /tasks just using /clear for testing
 			url := c.url
@@ -275,6 +293,7 @@ func TestAddGetClearTasksCorrect(t *testing.T) {
 			data, err := ioutil.ReadAll(res.Body)
 			assert.Nil(t, err)
 			assert.Equal(t, c.want, string(data))
+			assert.Equal(t, c.respCode, res.StatusCode)
 		}
 	}
 
