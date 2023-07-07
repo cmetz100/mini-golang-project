@@ -13,13 +13,33 @@ datadog:
   logs:
     enabled: true
     containerCollectAll: true
+  confd:
+    jmxselftracking.yaml: |-
+      init_config:
+        is_jmx: true
+        java_options: "-Djdk.attach.allowAttachSelf=true"
+      instances:
+        - process_name_regex: .*org.datadog.jmxfetch.App.*
+          name: jmx_2_test_self
+          collect_default_jvm_metrics: true
+          max_returned_metrics: 300000
+          new_gc_metrics: true
+          conf:
+            - include:
+                domain_regex: java\.lang.*|JMXFetch
+                attribute:
+                - TotalPhysicalMemorySize
+                - FreePhysicalMemorySize
+                - TotalMemorySize
+                - FreeMemorySize
+                - AttributeCount
+                - MetricCount
+                - BeanCount
+                - Instance
+          tools_jar_path: "notimportant"
+          tags:
+          - jmx:fetch
 agents:
-  containers:
-    agent:
-      ports:
-      - containerPort: 8125
-        hostPort: 8125
-        name: dogstatsdport
-        protocol: UDP
-
-
+  image:
+    name: agent
+    tagSuffix: "jmx"
