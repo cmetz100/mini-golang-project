@@ -1,0 +1,63 @@
+apiVersion: datadoghq.com/v2alpha1
+kind: DatadogAgent
+metadata:
+  name: datadog
+spec:
+  global:
+    credentials:
+      apiSecret:
+        secretName: datadog-secret
+        keyName: api-key
+    kubelet:
+      tlsVerify: false
+  features:
+    apm:
+      enabled: true
+    logCollection:
+      enabled: true
+  override:
+    nodeAgent:
+      image:
+        name: gcr.io/datadoghq/agent:latest-jmx
+      annotations:
+        ad.datadoghq.com/agent.check_names: '["jmxfetch_self_check"]'
+        ad.datadoghq.com/agent.init_configs: '[{"is_jmx":true,"java_options": "-Djdk.attach.allowAttachSelf=true"}]'
+        ad.datadoghq.com/agent.instances: |
+          [
+            {
+              "process_name_regex": ".*org.datadog.jmxfetch.App.*",
+              "collect_default_jvm_metrics":true,
+              "max_returned_metrics":300000,
+              "new_gc_metrics":true,
+              "tools_jar_path":"I_am_useless",
+              "conf":
+              [
+                {
+                  "include":
+                    {
+                      "domain_regex":"JMXFetch"
+                    }
+                }
+              ]
+            }
+          ]
+
+  #override:
+    #nodeAgent:
+    #  image:
+    #    name: gcr.io/datadoghq/agent:7.45.1-jmx
+      # extraConfd:
+      #   configDataMap:
+      #         jmxselftracking.yaml: |-
+      #           init_config:
+      #             is_jmx: true
+      #             java_options: "-Djdk.attach.allowAttachSelf=true"
+      #           instances:
+      #             - process_name_regex: ".*org.datadog.jmxfetch.App.*"
+      #               name: "jmx_2_test_self"
+      #               collect_default_jvm_metrics: true
+      #               max_returned_metrics: 300000
+      #               new_gc_metrics: true
+      #               tools_jar_path: "notimportant"
+      #               tags:
+      #               - jmx:fetch

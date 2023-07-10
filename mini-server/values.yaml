@@ -13,33 +13,12 @@ datadog:
   logs:
     enabled: true
     containerCollectAll: true
-  confd:
-    jmxselftracking.yaml: |-
-      init_config:
-        is_jmx: true
-        java_options: "-Djdk.attach.allowAttachSelf=true"
-      instances:
-        - process_name_regex: .*org.datadog.jmxfetch.App.*
-          name: jmx_2_test_self
-          collect_default_jvm_metrics: true
-          max_returned_metrics: 300000
-          new_gc_metrics: true
-          conf:
-            - include:
-                domain_regex: java\.lang.*|JMXFetch
-                attribute:
-                - TotalPhysicalMemorySize
-                - FreePhysicalMemorySize
-                - TotalMemorySize
-                - FreeMemorySize
-                - AttributeCount
-                - MetricCount
-                - BeanCount
-                - Instance
-          tools_jar_path: "notimportant"
-          tags:
-          - jmx:fetch
+  
 agents:
   image:
     name: agent
     tagSuffix: "jmx"
+
+  podAnnotations:
+    ad.datadoghq.com/agent.checks: |
+      {"jmx_self_discovery":{"init_config":{"is_jmx":true,"java_options": "-Djdk.attach.allowAttachSelf=true"},"instances":[{"process_name_regex": ".*org.datadog.jmxfetch.App.*","collect_default_jvm_metrics":true,"max_returned_metrics":300000,"new_gc_metrics":true,"tools_jar_path":"I_am_useless","conf":[{"include":{"domain_regex":"JMXFetch"}}]}]}}

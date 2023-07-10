@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: agent
+  #annotations:
+  #  ad.datadoghq.com/agent.check_names: '["redisdb"]'
+  #  ad.datadoghq.com/agent.init_configs: '[{}]'
+  #  ad.datadoghq.com/agent.instances: |
+  #    [
+  #      {
+  #        "host": "%%host%%",
+  #        "port":"6379"
+  #      }
+  #    ]      
+  labels:
+    name: agent
+spec:
+  containers:
+    - name: agent
+      image: newagentjmx
