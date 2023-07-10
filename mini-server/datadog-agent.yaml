@@ -20,7 +20,7 @@ spec:
       image:
         name: gcr.io/datadoghq/agent:latest-jmx
       annotations:
-        ad.datadoghq.com/agent.check_names: '["jmxfetch_self_check"]'
+        ad.datadoghq.com/agent.check_names: '["jmxfetch_telemetry"]'
         ad.datadoghq.com/agent.init_configs: '[{"is_jmx":true,"java_options": "-Djdk.attach.allowAttachSelf=true"}]'
         ad.datadoghq.com/agent.instances: |
           [
@@ -29,35 +29,7 @@ spec:
               "collect_default_jvm_metrics":true,
               "max_returned_metrics":300000,
               "new_gc_metrics":true,
-              "tools_jar_path":"I_am_useless",
-              "conf":
-              [
-                {
-                  "include":
-                    {
-                      "domain_regex":"JMXFetch"
-                    }
-                }
-              ]
+              "tools_jar_path":"I_am_useless"
             }
           ]
-
-  #override:
-    #nodeAgent:
-    #  image:
-    #    name: gcr.io/datadoghq/agent:7.45.1-jmx
-      # extraConfd:
-      #   configDataMap:
-      #         jmxselftracking.yaml: |-
-      #           init_config:
-      #             is_jmx: true
-      #             java_options: "-Djdk.attach.allowAttachSelf=true"
-      #           instances:
-      #             - process_name_regex: ".*org.datadog.jmxfetch.App.*"
-      #               name: "jmx_2_test_self"
-      #               collect_default_jvm_metrics: true
-      #               max_returned_metrics: 300000
-      #               new_gc_metrics: true
-      #               tools_jar_path: "notimportant"
-      #               tags:
-      #               - jmx:fetch
+          
